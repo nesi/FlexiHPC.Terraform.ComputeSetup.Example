@@ -30,6 +30,35 @@ vm_user     = "ubuntu"
 
 `FLEXIHPC_KEYFILE` is the local location for your ssh key
 
+The below config will setup the `s3` backend and use FlexiHPC's object storage to store the Terraform state file.
+
+Inside the `provider.tf` file is some additional user configuration
+```
+  backend "s3" {
+    bucket = "terraform-state"
+    key    = "state/terraform.tfstate"
+    endpoint   = "https://object.akl-1.cloud.nesi.org.nz/"
+    sts_endpoint = "https://object.akl-1.cloud.nesi.org.nz/"
+    access_key = "<EC2 User Access Token>"
+    secret_key = "<EC2 User Secret Token>"
+    #region = "us-east-1"
+    force_path_style = "true"
+    skip_credentials_validation = "true"
+  }
+```
+`EC2 User Access Token` needs to be replaced with your EC2 users Access token
+
+`EC2 User Secret Token` needs to be replaced with your EC2 users secret token
+
+If you dont have any EC2 credentials then use the following CLI command to generate new ones
+```
+openstack ec2 credentials create
+```
+You can also list your EC2 credentials with the following CLI command
+```
+openstack ec2 credentials list
+```
+
 ## Example run without creating and destruction in a single script
 
 With these values updated you should be able to run the following commands to setup the environment

@@ -38,6 +38,12 @@ where
 
 Within the *terraform* directory you will also need to set the bucket name under the file *terraform/provider.tf* on line 12.
 
+You will also need to run the following command and make a copy of the *terraform.tfvars.example* and rename it to *terraform.tfvars*
+
+```
+cp terraform.tfvars.example terraform.tfvars
+```
+
 You will also need to ensure you have downloaded your *clouds.yaml* from the NeSI RDC and ensure it is located in *~/.config/openstack/*.
 
 ## Deployment

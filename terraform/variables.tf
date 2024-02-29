@@ -6,11 +6,6 @@ variable "tenant_name" {
   description = "FlexiHPC project Name"
 }
 
-variable "password" {
-  description = "FlexiHPC password"
-  type        = string
-  sensitive   = true
-}
 variable "auth_url" {
   description = "FlexiHPC authentication URL"
   default = "https://keystone.akl-1.cloud.nesi.org.nz/v3"

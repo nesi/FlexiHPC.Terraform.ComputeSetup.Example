@@ -9,8 +9,8 @@ required_version = ">= 0.14.0"
   }
 
   backend "s3" {
-    bucket = "BUCKET_NAME"
-    key    = "state/github-runner.terraform.tfstate"
+    bucket = "terraform"
+    key    = "state/kahu-example.terraform.tfstate"
     region = "us-east-1"
     use_path_style = "true"
     skip_credentials_validation = "true"    
@@ -24,5 +24,5 @@ required_version = ">= 0.14.0"
 
 # Configure the OpenStack Provider
 provider "openstack" {
-  cloud = "openstack"
+  cloud = "openstack-mwlr-sandbox"
 }

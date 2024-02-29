@@ -1,10 +1,22 @@
 # FlexiHPC.Terraform.ComputeSetup.Example
 
-This example repo is to demonstrate setting up compute services within the FlexiHPC platform using Terraform.
+This example repo is to demonstrate programatically setting up compute services within the FlexiHPC platform using Ansible and Terraform.
 
-[Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) and [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) needs to be installed on your system to use this example.
+## Prerequisites
 
-It also provides different examples of where to run Anisble if the user so wishes.
+The following dependencies must be installed on your local machine:
+
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
+  - Ansible is a suite of software tools that enables infrastructure as code. It can configure systems, deploy software
+    and orchestrate advanced workflows to support application deployment, system updates and more.
+- [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+  - Terraform is another infrastructure as code software tool. It can create and manage resources on cloud platforms and
+    other services through their application programming interfaces (APIs).
+- [python-openstackclient](https://github.com/openstack/python-openstackclient)
+  - The python-openstackclient is a Python package that provides a command line interface (CLI) to an OpenStack cloud, such
+    as NeSI's Flexi platform.
+
+## Steps
 
 Inside the `terraform.tfvars` file is some user configuration required.
 

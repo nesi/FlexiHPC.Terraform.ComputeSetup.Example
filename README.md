@@ -16,78 +16,32 @@ The following dependencies must be installed on your local machine:
   - The python-openstackclient is a Python package that provides a command line interface (CLI) to an OpenStack cloud, such
     as NeSI's Flexi platform.
 
-## Steps
+## Configuration
 
-Inside the `terraform.tfvars` file is some user configuration required.
+You will need to configure the deployment by setting some environment variables:
 
 ```
-user_name   = "FLEXIHPC_USER"
-tenant_name = "FLEXIHPC_PROJECT_NAME"
-auth_url    = "https://keystone.akl-1.cloud.nesi.org.nz/v3"
-region      = "akl-1"
-
-key_pair    = "FLEXIHPC_KEYPAIR_NAME"
-key_file    = "FLEXIHPC_KEYFILE"
-
-flavor_id   = "ee55c523-9803-4296-91be-1c34e986baaa"
-image_id    = "a5c9b7b2-e77b-4094-99ac-db0cf5181da5"
-vm_user     = "ubuntu"
+export TF_VAR_key_pair="KEY_PAIR_NAME"
+export TF_VAR_key_file="~/.ssh/location/to/key_pair"
+export TF_VAR_vm_user="ubuntu"
+export AWS_ACCESS_KEY_ID="<EC2_ACCESS_KEY>"
+export AWS_SECRET_KEY="<EC2_SECRET_KEY>"
 ```
 
-`FLEXIHPC_USER` is set to your username for the FlexiHPC Platform
+where
 
-`FLEXIHPC_PROJECT_NAME` is the project name
+- `TF_VAR_key_pair` is the Key Pair name in NeSI RDC
+- `TF_VAR_key_file` is the Key Pair location on your local machine
+- `TF_VAR_vm_user` is the user for the RDC cloud image
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_KEY` are EC2 credentials created on the RDC, see
+  [Creating and Managing EC2 credentials](https://support.cloud.nesi.org.nz/user-guides/create-and-manage-object-storage/creating-and-managing-ec2-credentials-via-cli/)
 
-`FLEXIHPC_KEYPAIR_NAME` is your `Key Pair` name that is setup in FlexiHPC
+Within the *terraform* directory you will also need to set the bucket name under the file *terraform/provider.tf* on line 12.
 
-`FLEXIHPC_KEYFILE` is the local location for your ssh key
+You will also need to ensure you have downloaded your *clouds.yaml* from the NeSI RDC and ensure it is located in *~/.config/openstack/*.
 
-The below config will setup the `s3` backend and use FlexiHPC's object storage to store the Terraform state file.
+## Deployment
 
-Inside the `provider.tf` file is some additional user configuration
-```
-  backend "s3" {
-    bucket = "terraform-state"
-    key    = "state/terraform.tfstate"
-    endpoint   = "https://object.akl-1.cloud.nesi.org.nz/"
-    sts_endpoint = "https://object.akl-1.cloud.nesi.org.nz/"
-    access_key = "<EC2 User Access Token>"
-    secret_key = "<EC2 User Secret Token>"
-    #region = "us-east-1"
-    force_path_style = "true"
-    skip_credentials_validation = "true"
-  }
-```
-`EC2 User Access Token` needs to be replaced with your EC2 users Access token
+With the configuration step completed you can run `./deployment.sh create` to create the instance.
 
-`EC2 User Secret Token` needs to be replaced with your EC2 users secret token
-
-If you dont have any EC2 credentials then use the following CLI command to generate new ones
-```
-openstack ec2 credentials create
-```
-You can also list your EC2 credentials with the following CLI command
-```
-openstack ec2 credentials list
-```
-
-## Example run without creating and destruction in a single script
-
-With these values updated you should be able to run the following commands to setup the environment
-```
-terraform init
-terraform apply
-```
-This will ask for your FlexiHPC password before it does its plan stage for Terraform
-
-Once you are done with the environment running the following command will destroy the environment
-```
-terraform destroy
-```
-
-## Example run with creating and destruction in a single script
-
-Running the following script will create the enivronment with Terraform, Ping the servers from the Ansible `host.ini` file and if there is a response from all servers then it will drestroy the environment
-```
-./apply_and_destroy.sh
-```
+To destroy the instance run `./deployment.sh destroy`.

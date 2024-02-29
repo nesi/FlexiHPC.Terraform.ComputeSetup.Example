@@ -13,10 +13,12 @@ variable "password" {
 }
 variable "auth_url" {
   description = "FlexiHPC authentication URL"
+  default = "https://keystone.akl-1.cloud.nesi.org.nz/v3"
 }
 
 variable "region" {
   description = "FlexiHPC region"
+  default = "akl-1"
 }
 
 variable "instance_count" {
@@ -44,4 +46,11 @@ variable "image_id" {
 
 variable "vm_user" {
   description = "FlexiHPC VM user"
+  default = "ubuntu"
+}
+
+variable "extra_public_keys" {
+  description = "Additional SSH public keys to add to the authorized_keys file on provisioned nodes"
+  type = list(string)
+  default = []
 }
